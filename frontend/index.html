@@ -50,7 +50,10 @@
         _nextPhoto() {
           const { duration } = this
 
-          this.photo = this.availablePhotos[++this.currentPhoto]
+          if (this.currentPhoto == this.availablePhotos.length - 1) this.currentPhoto = 0
+          else this.currentPhoto++
+
+          this.photo = this.availablePhotos[this.currentPhoto]
 
           console.log("Next photo : ", this.photo)
 
