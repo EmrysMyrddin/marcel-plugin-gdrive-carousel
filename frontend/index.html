@@ -1,0 +1,64 @@
+<link rel="import" href="style.html">
+
+<dom-module id="marcel-plugin-gdrive-carousel">
+  <template>
+    <style include="marcel-plugin-gdrive-carousel-style"></style>
+    <div id="container">
+      <img src$="[[photo]]" role="presentation" class$="[[photoClass]]" />
+    </div>
+  </template>
+  <script>
+    (() => {
+
+      const api = (driveFolderId, apikey) => `https://www.googleapis.com/drive/v3/files?q='${driveFolderId}'+in+parents&key=${apikey}`
+      const img = (id, apikey) => `https://drive.google.com/uc?export=view&id=${id}&key=${apikey}`
+
+      class GDriveCarousel extends Polymer.Element {
+        static get is() { return 'marcel-plugin-gdrive-carousel' }
+        static get properties() {
+          return {
+            drivefolderid: String,
+            apikey: String,
+            duration: Number,
+            saveproportions: Boolean
+          }
+        }
+
+        connectedCallback() {
+          super.connectedCallback();
+          const { drivefolderid, apikey, saveproportions } = this
+
+          this.photoClass = saveproportions ? 'proportional' : ''
+
+          fetch(api(drivefolderid, apikey))
+            .then(response => response.json())
+            .then(json => this._setPhotos(json))
+            .then(() => this._nextPhoto())
+        }
+
+        disconnectedCallback() {
+          if (this.nextTimeout) clearTimeout(this.nextTimeout)
+        }
+
+        _setPhotos(directory) {
+          const { apikey } = this
+          this.availablePhotos = directory.files.map(({ id }) => img(id, apikey))
+          this.currentPhoto = 0
+          console.log("Photos found : ", this.availablePhotos)
+        }
+
+        _nextPhoto() {
+          const { duration } = this
+
+          this.photo = this.availablePhotos[++this.currentPhoto]
+
+          console.log("Next photo : ", this.photo)
+
+          this.nextTimeout = setTimeout(() => this._nextPhoto(), duration || 30000)
+        }
+      }
+
+      customElements.define(GDriveCarousel.is, GDriveCarousel);
+    })();
+  </script>
+</dom-module>

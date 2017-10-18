@@ -1,0 +1,32 @@
+{
+  "name": "Photo Carouel (GD)",
+  "eltName": "marcel-plugin-gdrive-carousel",
+  "icon": "picture_in_picture_alt",
+  "frontend": {
+    "props": [
+      {
+        "name": "driveFolderId",
+        "type": "string",
+        "description": "The folder containing the images",
+        "value": ""
+      },
+      {
+        "name": "duration",
+        "type": "number",
+        "description":
+          "The duration of photo exposition in ms."
+      },
+      {
+        "name": "saveProportions",
+        "type": "number",
+        "description":
+          "The duration of photo exposition in ms."
+      },
+      {
+        "name": "apikey",
+        "type": "string",
+        "description": "The Google Drive API key having access right on the given folder"
+      }
+    ]
+  }
+}
