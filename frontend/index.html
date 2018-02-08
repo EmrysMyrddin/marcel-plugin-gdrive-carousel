@@ -39,8 +39,8 @@
   </style>
 
   <script>
-    const api = (driveFolderId, apikey) => `https://www.googleapis.com/drive/v3/files?q='${driveFolderId}'+in+parents&key=${apikey}`
-    const img = (id, apikey) => `https://drive.google.com/uc?export=view&id=${id}&key=${apikey}`
+    const api = (driveFolderId, apiKey) => `https://www.googleapis.com/drive/v3/files?q='${driveFolderId}'+in+parents&key=${apiKey}`
+    const img = (id, apiKey) => `https://drive.google.com/uc?export=view&id=${id}&key=${apiKey}`
 
     class GDriveCarousel extends Marcel.Plugin {
       constructor() {
@@ -57,16 +57,16 @@
       }
 
       fetchPhotos() {
-        const { driveFolderId, apikey } = this.props
-        fetch(api(driveFolderId, apikey))
+        const { driveFolderId, apiKey } = this.props
+        fetch(api(driveFolderId, apiKey))
           .then(response => response.json())
           .then(json => this.setPhotos(json))
           .then(() => this.nextPhoto())
       }
 
       setPhotos(directory) {
-        const { apikey } = this.props
-        this.availablePhotos = directory.files.map(({ id }) => img(id, apikey))
+        const { apiKey } = this.props
+        this.availablePhotos = directory.files.map(({ id }) => img(id, apiKey))
         this.currentPhoto = 0
         console.log("Photos found : ", this.availablePhotos)
       }
@@ -85,7 +85,7 @@
       }
 
       propsDidChange(prevProps) {
-        if (this.props.apikey !== prevProps.apikey || this.props.driveFolderId !== prevProps.driveFolderId) {
+        if (this.props.apiKey !== prevProps.apiKey || this.props.driveFolderId !== prevProps.driveFolderId) {
           clearTimeout(this.nextTimeout)
           this.fetchPhotos()
         }
