@@ -7,7 +7,7 @@
       {
         "name": "driveFolderId",
         "type": "string",
-        "description": "The folder containing the images",
+        "description": "The folder containing the images"
       },
       {
         "name": "duration",
